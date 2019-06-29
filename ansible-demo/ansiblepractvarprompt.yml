@@ -1,0 +1,17 @@
+---
+- hosts: web #group name from inventory
+  
+  vars_prompt:
+    - name: pack_name
+      prompt: Input package name
+    - name: serv_name
+      prompt: Input service name
+
+  tasks:
+    - name: Install {{ pack_name }}
+      yum: pkg={{ pack_name }} state=installed
+      become: yes
+    - name: Start {{ serv_name }}
+      service: name={{ serv_name }} state=started
+      become: yes
+...

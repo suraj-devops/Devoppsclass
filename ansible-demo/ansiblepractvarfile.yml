@@ -1,0 +1,14 @@
+---
+- hosts: web #group name from inventory
+  
+  vars_files:
+    - /opt/Devoppsclass/ansible-demo/web_vars.yml
+
+  tasks:
+    - name: Install {{ pack_name }}
+      yum: pkg={{ pack_name }} state=installed
+      become: yes
+    - name: Start {{ serv_name }}
+      service: name={{ serv_name }} state=started
+      become: yes
+...
