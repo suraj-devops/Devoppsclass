@@ -1,0 +1,33 @@
+---
+- hosts: web 
+
+  tasks:
+    - name: datte command
+      command: date
+      register: outdate
+       
+    - name: catt host
+      command: cat /etc/hosts
+      register: cathost
+
+    - name: uppptime
+      command: uptime
+      register: upptime
+
+    - lineinfile:
+        path: /tmp/lineinfileout.txt
+        line: "{{ outdate.stdout }}"
+        state: present
+        create: yes
+    - lineinfile:
+        path: /tmp/lineinfileout.txt
+        line: "{{ cathost.stdout }}"
+        state: present
+        create: yes
+    - lineinfile:
+        path: /tmp/lineinfileout.txt
+        line: "{{ upptime.stdout }}"
+        state: present
+        create: yes
+...
+  

@@ -1,0 +1,23 @@
+---
+- hosts: web 
+
+  tasks:
+    - name: datte command
+      command: date
+      register: outdate
+
+    - debug: var=outdate
+    
+    - name: catt host
+      command: cat /etc/hosts
+      register: cathost
+
+    - debug: var=cathost
+
+    - name: uppptime
+      command: uptime
+      register: upptime
+
+    - debug: var=upptime
+...
+  
