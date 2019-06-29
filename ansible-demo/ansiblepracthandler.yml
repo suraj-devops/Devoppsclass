@@ -1,0 +1,16 @@
+---
+- hosts: web #group name from inventory
+
+  vars:
+    - pack_name: httpd
+    - serv_name: httpd
+
+  tasks:
+    - name: Install {{ pack_name }}
+      yum: pkg={{ pack_name }} state=installed
+      notify: Restart httpd
+
+  handlers:
+    - name: Restart httpd
+      action: service name={{ serv_name }}  state=restarted
+...  
