@@ -1,0 +1,11 @@
+---
+-
+  name: Execute two command on localhost
+  hosts: localhost
+
+  tasks:
+    - name: Execute date command
+      command: date
+    - name: Execute command to display hosts file
+      command: cat /etc/hosts
+...
