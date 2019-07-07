@@ -1,0 +1,31 @@
+---
+- name: Install list of pkgs on remote machine
+  hosts: web_node1
+  
+  vars:
+    packages:
+      - httpd
+      - binutils
+      - glibc
+      - ksh
+      - libaio
+      - libXext
+      - gcc
+      - make
+      - sysstat
+      - unixODBC
+      - mongodb
+      - nodejs
+      - grunt
+
+  tasks:
+    - name: Install "{{ item }}"
+      yum: pkg={{ item }} state=installed
+      ignore_error: yes
+      become: yes
+      with_items: "{{ packages }}"
+      register: output
+
+    - debug: msg="{{ item.results }}"
+      with_items: "{{ output.results}}"       
+...  
