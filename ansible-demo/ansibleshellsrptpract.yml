@@ -1,0 +1,16 @@
+---
+- name: Install httpdpkg on remove machine
+  hosts: web_node1
+  gather_facts: no
+
+  vars:
+    server_ip: 13.235.27.105
+
+  tasks:
+    - name: Execute shell script to install httpdpkg
+      script: /opt/Devoppsclass/shellscripting/install-apache.sh {{ server_ip }}
+      become: yes
+      register: output
+
+    - debug: var=output
+...

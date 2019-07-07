@@ -7,39 +7,31 @@
     pkg_loc: "/etc/yum.repos.d/mysql-community.repo"
 
   tasks:
-    - name: Download  mysql package
-      command: rpm -Uvh {{ rpm_pkg }}
-      become: yes
-      register: mysqlinstal
-      
-    - debug: var=mysqlinstal
+#    - name: Download  mysql package
+#     command: rpm -Uvh {{ rpm_pkg }}
+#      become: yes
+#      register: mysqlinstal
+#      
+#    - debug: var=mysqlinstal
 
     - name: Enable yumm repo
       command: sed -i 's/enabled=1/enabled=0/' {{ pkg_loc }} 
       become: yes
       register: yumrepoenable
-      when: mysqlinstal is succeeded
 
     - debug: var=yumrepoenable
 
     - name: Install Mysql Server
-      command: yum --enablerepo=mysql57-community install mysql-community-server
+      command: yum --enablerepo=mysql80-community install -y  mysql-community-server
       become: yes
       register: yuminstall
       when: yumrepoenable is succeeded
 
     - debug: var=yuminstall
     
-    - name: Start mysql server
+    - name: Start mysql service
       command: systemctl start mysqld.service
       become: yes
       register: strtmysqlserver
-      when: yuminstall is succeeded
-
-    - debug: var=strtmysqlserver
-
-    - name: Start mysql service
-      service: name=mysqld state=started
-      become: yes
       when: yuminstall is succeeded
 ...
