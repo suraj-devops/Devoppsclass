@@ -1,0 +1,20 @@
+---
+- name: Install list of pkgs on remote machine
+  hosts: localhost
+  
+  vars:
+    packages:
+      - httpd
+      - binutils
+      - mongodb
+
+  tasks:
+    - name: Install "{{ item }}"
+      yum:
+        list: "{{ packages }}"
+        list: available
+      register: isavailable
+      
+
+    - debug: var=isavailable
+...  

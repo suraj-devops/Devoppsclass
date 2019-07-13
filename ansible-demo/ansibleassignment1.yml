@@ -14,18 +14,16 @@
       - make
       - sysstat
       - unixODBC
-      - mongodb
-      - nodejs
-      - grunt
 
   tasks:
     - name: Install "{{ item }}"
-      yum: pkg={{ item }} state=installed
-      ignore_error: yes
+      yum: 
+        name: "{{ packages }}"
+        state: present
       become: yes
-      with_items: "{{ packages }}"
       register: output
+    
 
-    - debug: msg="{{ item.results }}"
+    - debug: msg="{{ item }}"
       with_items: "{{ output.results}}"       
 ...  
