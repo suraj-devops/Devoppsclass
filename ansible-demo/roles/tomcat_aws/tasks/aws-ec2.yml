@@ -1,0 +1,38 @@
+- name: Create an ec2 instance
+
+  vars:
+    access_key: "{{ access_key }}"
+    secret_key: "{{ secret_key }}"
+
+  ec2:
+    key_name: "{{ keypair }}"
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    group: SG1  # security group name
+    instance_type: "{{ instance_type}}"
+    image: "{{ ami }}"
+    wait: true
+    region: "{{ region }}"
+    count: 1  # default
+    count_tag:
+      Name: "AnsibleClient1"
+    instance_tags:
+      Name: "AnsibleClient1"
+    vpc_subnet_id: "subnet-ddf0afb5"
+    assign_public_ip: yes
+  register: ec2
+
+- debug:
+    msg: "{{ item['private_ip'] }}"
+  with_items: "{{ ec2.instances }}"
+
+- name: Add all web instance IPs to host group
+  add_host:
+    hostname: "{{ item.private_ip }}"
+    groupname: webservers
+    ansible_user: ec2-user 
+  with_items: '{{ ec2.instances }}'
+
+- name: Wait for SSH to come up
+  wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+  with_items: '{{ ec2.instances }}'

@@ -1,0 +1,10 @@
+---
+- hosts: web_node1
+
+  tasks:
+    - name: Check if user exists
+      action: chkuser username=root1
+      register: user
+      become: yes
+
+    - debug: msg="{{ user.msg }}"

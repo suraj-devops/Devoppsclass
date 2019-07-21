@@ -1,0 +1,34 @@
+---
+- name: Create a new Demo EC2 instance
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    region: ap-south-1
+    instance_type: t2.micro
+    ami: ami-5b673c34
+    keypair: awsssh
+  
+  tasks:
+
+    - name: Create an ec2 instance
+      ec2:
+        key_name: "{{ keypair }}"
+        aws_access_key: ""
+        aws_secret_key: ""
+        group: SG1
+        instance_type: "{{ instance_type}}"
+        image: "{{ ami }}"
+        wait: true
+        region: "{{ region }}"
+        count: 1
+        count_tag:
+           Name: "Demo"
+        instance_tags:
+           Name: "Demo"
+        vpc_subnet_id: "subnet-ddf0afb5"
+        assign_public_ip: yes
+      register: ec111
+
+    - debug: var=ec111
+...

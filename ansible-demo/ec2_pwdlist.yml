@@ -1,0 +1,19 @@
+---
+- name: Create a new Demo EC2 instance
+  hosts: localhost
+  gather_facts: false
+  
+  tasks:
+    - name: Execute SSH-keygen
+      command: ssh-keygen -y -t rsa -f /root/.ssh/id_rsa -N ''
+      args:
+        creates: /root/.ssh/id_rsa
+      delegate_to: localhost
+
+    - name: Set Authorized key token from file
+      become: true
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+...

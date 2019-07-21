@@ -1,0 +1,16 @@
+---
+- name: Find folders
+  hosts: localhost
+
+  tasks:
+    - name: Get folder list
+      find:
+        path: /usr/local/
+        file_type: directory
+        contains: "bin"
+        recurse: yes
+      register: folderlist
+
+    - debug: msg="{{ item.path }}"
+      with_items: "{{ folderlist.files }}"
+...
