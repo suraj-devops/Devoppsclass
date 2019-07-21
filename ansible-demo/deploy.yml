@@ -16,13 +16,13 @@
 
   tasks:
 
-#    - copy:
-#        src: /usr/share/maven3/nvnshoppingcart/target/nvnshoppingcart.war
-#        dest: /usr/local/apache-tomcat-8.0.23/webapps/
-#        mode: 0777
-#        owner: root
-#        group: root
-#
+    - copy:
+        src: /var/lib/jenkins/workspace/e2eproject/target/nvnshoppingcart.war
+        dest: /usr/local/apache-tomcat-8.0.23/webapps/
+        mode: 0777
+        owner: root
+        group: root
+
     - name: start tomcat service
       become: true
       service: name=tomcat state=started
